@@ -115,3 +115,17 @@ The app will be available at `http://localhost:5173`.
 
 ---
 
+### 4. Create Your Admin Account
+
+The system uses a one-time setup endpoint to create the first admin.
+
+```bash
+curl -X POST http://localhost:5000/api/auth/setup \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin",
+    "password": "yourpassword",
+    "name": "Your Name",
+    "setupKey": "YOUR_SETUP_KEY_FROM_ENV"
+  }'
+```
