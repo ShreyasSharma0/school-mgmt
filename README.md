@@ -8,7 +8,7 @@ Built with **React + Vite** (frontend) and **Node.js + Express + MongoDB** (back
 
 ## ✨ Features
 
-- **Admin Authentication** — Secure JWT-based login with bcrypt password hashing
+- **Admin Authentication** - Secure JWT-based login with bcrypt password hashing
 - **Student Management** — Add, edit, soft-delete, and search students with class/section filters
 - **Task/Assignment Management** — Assign tasks, set priorities and due dates, mark complete, auto-mark overdue
 - **Dashboard** — Live stats on students, pending, completed, and overdue tasks
@@ -29,43 +29,19 @@ Built with **React + Vite** (frontend) and **Node.js + Express + MongoDB** (back
 
 ---
 
-## 📁 Project Structure
-
-```
-school-mgmt/
-├── backend/
-│   ├── models/          # Mongoose schemas (Admin, Student, Task)
-│   ├── routes/          # Express routers (auth, students, tasks)
-│   ├── middleware/       # JWT auth middleware
-│   ├── server.js        # App entry point
-│   ├── vercel.json      # Vercel backend deployment config
-│   └── .env.example     # Environment variable template
-└── frontend/
-    ├── src/
-    │   ├── api/         # Axios instance + API helpers
-    │   ├── components/  # Shared components (Layout, Modal)
-    │   ├── context/     # React Auth context
-    │   └── pages/       # Route pages (Login, Dashboard, Students, Tasks)
-    ├── vite.config.js
-    ├── vercel.json      # Vercel SPA rewrite config
-    └── .env.example
-```
-
----
-
 ## 🚀 Local Development Setup
 
 ### Prerequisites
 
 - **Node.js** v18+
-- **MongoDB** — [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (free tier) or local install
+- **MongoDB** — [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 
 
 ---
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/school-mgmt.git
+git clone https://github.com/ShreyasSharma0/school-mgmt.git
 cd school-mgmt
 ```
 
