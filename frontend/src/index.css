@@ -1,0 +1,112 @@
+/* Color Palette from colorhunt.co/palette/f9b2d7cfecf3daf9def6ffdc */
+:root {
+  --pink: #F9B2D7;
+  --blue: #CFECF3;
+  --mint: #DAF9DE;
+  --yellow: #F6FFDC;
+
+  /* Derived shades */
+  --pink-dark: #e87ab8;
+  --pink-light: #fdd6eb;
+  --blue-dark: #89c9dc;
+  --blue-light: #e8f7fb;
+  --mint-dark: #8edba0;
+  --mint-light: #edfbef;
+  --yellow-dark: #cce080;
+  --yellow-light: #fbffe8;
+
+  /* Neutrals */
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a6a;
+  --text-muted: #8888aa;
+  --surface: #ffffff;
+  --surface-raised: #fafbff;
+  --border: rgba(207, 236, 243, 0.7);
+  --shadow-soft: 0 2px 20px rgba(249, 178, 215, 0.15);
+  --shadow-card: 0 4px 40px rgba(249, 178, 215, 0.12);
+  --shadow-hover: 0 8px 60px rgba(249, 178, 215, 0.25);
+
+  /* Fonts */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Spacing */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--yellow-light);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--blue-light); }
+::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--pink-dark); }
+
+/* Utility */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade { animation: fadeIn 0.4s ease both; }
+.animate-slide { animation: slideIn 0.35s ease both; }
+.animate-scale { animation: scaleIn 0.3s ease both; }
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, var(--blue-light) 25%, var(--blue) 50%, var(--blue-light) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
