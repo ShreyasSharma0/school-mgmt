@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
-console.log('SETUP_KEY loaded:', JSON.stringify(process.env.SETUP_KEY));
 
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/students');
@@ -19,7 +18,7 @@ app.use(morgan('combined'));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
@@ -27,7 +26,6 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Stricter rate limit for auth routes
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
@@ -37,7 +35,7 @@ app.use('/api/auth', authLimiter);
 
 // CORS
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',')
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
   : ['http://localhost:5173', 'http://localhost:3000'];
 
 app.use(cors({
@@ -54,6 +52,30 @@ app.use(cors({
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
+// MongoDB connection cached for Vercel serverless
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected && mongoose.connection.readyState === 1) return;
+  await mongoose.connect(process.env.MONGODB_URI, {
+    dbName: process.env.DB_NAME || 'school_mgmt',
+    bufferCommands: false,
+  });
+  isConnected = true;
+  console.log('MongoDB connected');
+};
+
+// Ensure DB connected before every request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('DB connection error:', err.message);
+    res.status(500).json({ error: 'Database connection failed' });
+  }
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
@@ -61,7 +83,11 @@ app.use('/api/tasks', taskRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+  });
 });
 
 // 404 handler
@@ -83,20 +109,16 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: process.env.DB_NAME || 'school_mgmt',
-    });
-    console.log('✅ MongoDB connected');
-  } catch (err) {
-    console.error('❌ MongoDB connection error:', err.message);
+// Local dev server
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  connectDB().then(() => {
+    app.listen(PORT, () => console.log('Server running on port ' + PORT));
+  }).catch(err => {
+    console.error('Failed to connect to DB:', err.message);
     process.exit(1);
-  }
-};
+  });
+}
 
-
-
+// Vercel serverless export
 module.exports = app;
-
