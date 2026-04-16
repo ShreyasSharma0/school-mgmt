@@ -6,9 +6,9 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-const authRoutes = require('./routes/auth');
-const studentRoutes = require('./routes/students');
-const taskRoutes = require('./routes/tasks');
+const authRoutes = require('./backend/routes/auth');
+const studentRoutes = require('./backend/routes/students');
+const taskRoutes = require('./backend/routes/tasks');
 
 const app = express();
 
